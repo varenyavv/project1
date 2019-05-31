@@ -1,0 +1,25 @@
+config setup
+
+git config --global user.name varenyavv
+git config --global user.email varenya.ind@gmail.com
+git config --global help.autocorrect 1
+git config --global core.editor vim
+git config --list
+git rm file2
+
+git rm file2
+git rm --cached file3
+
+git diff HEAD~1..HEAD
+
+git tag --a v1.4 -m "new change"
+
+git tag --a v1.3 213863ec5c75fd180cc8a4a633643fac93cd9a98 -m "v1.3 new change"
+
+git show
+
+git remote add origin https://github.com/varenyavv/project1.git
+git push -u origin master
+git push --tags
+
+git reset --hard HEAD~1
