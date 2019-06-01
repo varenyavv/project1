@@ -1,0 +1,104 @@
+
+GitHub link: https://github.com/lerndevops/workshop-labs
+----------------------------------------------------------
+
+
+
+Java configuration in Jenkins console 
+    
+    Manage Jenkins --> Global Tool Configuration --> JDK --> Add JDK
+        Name: myjava ( can be any string )
+        JAVA_HOME: /path/to/javahome ( ex: /usr/lib/jvm/java-8-oracle )
+
+Maven Configuration in Jenkins console
+    
+    Manage Jenkins --> Global Tool Configuration --> Maven --> Add Maven
+        Name: maven3.6 ( can be any string )
+        MAVEN_HOME: /path/to/mavenhome ( /opt/apache-maven-3.6.0 )
+        
+        ============================================================
+        
+        
+CI ( continuous Integration )
+
+build lifecycle  : maven goal           : post build action 
+    compile      : compile              : NA
+    codereview   : -P metrics pmd:pmd   : **/pmd.xml ( publish pmd analysis results )
+    unit test    : test                 : target/surefire-reports/*.xml  ( publish Juni test results )
+    metric check : cobertura:cobertura -Dcobertura.report.format=xml : target/site/cobertura/coverage.xml ( publish cobertura coverage report )
+    package      : package -- Execute Sonarqube Scanner
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+JENKINS_URL/job/my-second-job/build?token=TOKEN_NAME
+http://3.16.163.158:8080/job/my-second-job/build?token=varenya
+
+#Sample java app
+https://github.com/lerndevops/samplejavaapp
+
+Default jenkins installation loc -- /var/lib/jenkins
+all the job settings lie in config.xml --- :/var/lib/jenkins/jobs/<job-name>
+
+To set tools like jdk, maven etc in jenkins; Manage Console --> Global Tool Configuration
+
+crontab -- scheduler in linux
+
+GitHub hook trigger for GITScm polling opposite to poll scm
+
+
+Manage plugins -- demo installing pmd plugin
+
+installed "build pipeline" plugin
+
+Master/Slave Concept
+java -jar agent.jar -jnlpUrl http://3.16.163.158:8080/computer/slave1/slave-agent.jnlp -secret 9a3a26071c55ec427b202c8966eaa48e2a0d89b918c1279168d4aa04ba280887 -workDir "C:\Users\ITS\Desktop\varenya\day2\JenkinsSlaveFolder"
+
+#restart jenkins.. just append restart to the root server url
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Sonar Cube http://3.19.70.190:9000
+admin/cee2cc6c0f792e13b6331dbe44ed327a6addd6be
+
+install sonarrunner
+JFrog http://3.19.70.190:8081
+
+Jenkins Job config --- Build Environment -> check Generic-Artifactory Integration
+{
+    "files": [
+        {
+            "pattern": "*.war",
+            "target": "key created in jfrog (the virtual repo name)"
+         }
+    ]
+}
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+-- Images lie in repo -- dockerhub
+-- tomcat img
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+commands 
+docker pull tomcat
+docker images
+docker run -d -P tomcat #also pulls if locally not available
+docker ps #status
+docker stop 90fcc6e8d4ef
+docker ps -a 	running + rest containers
+docker ps -aq 	returns just the IDs
+docker start 90fcc6e8d4ef
+docker restart 90fcc6e8d4ef
+docker rm 90fcc6e8d4ef remove non-running
+docker rm -f 90fcc6e8d4ef remove force
+docker run -it tomcat bash #run and go inside
+ctrl p q #coming out of container
+docker exec -it 61845c26c606 bash #get inside running container
+docker run --name ravi -d -P tomcat #name
+docker inspect 40d18949b49f
+docker rm `docker ps -aq` #remove all containers
+docker run -d -p 8080:8080 tomcat #can map to my own available port
+docker search <whatever> #return search result from hub.docker.com
+docker rmi <> #deletes image
+docker commit -m "instlled nginx" -c 'CMD /usr/sbin/nginx -g "daemon off;"' -c 'EXPOSE 80' <contid> < new image name>
+docker build -t varenya-nginx -f dockerfile_nginx2 . (#t tag, f file . present pwd)
+docker build -t myapp:v1 -f dockerfile_myapp . (# maintain tag)
+docker run -d -P -v /tmp/hello:/var/www/html varenya-nginx #volume concept, override nginx index.html in container@/var/www/html with file present at docker-host@/tmp/hello
+docker run -d -P -v /tmp/tomcatlogs:/usr/local/tomcat/logs tomcat
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+nginx installation loc /etc/nginx	index.html /usr/share/nginx/html
