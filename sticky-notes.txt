@@ -1,0 +1,11 @@
+3.16.163.158 ip-172-31-47-72 Jenkins
+18.217.72.120 ip-172-31-22-176 Docker - 1, ansible controller, splunk server
+13.59.213.101 ip-172-31-27-21 Docker - 2, splunk forwarder
+18.188.11.150 ip-172-31-17-9 Docker - 3
+
+http://collabedit.com/b2768
+
+ssh -i lets_begin_again.pem ubuntu@3.16.163.158
+ssh -i lets_begin_again.pem ubuntu@18.217.72.120
+ssh -i lets_begin_again.pem ubuntu@13.59.213.101
+ssh -i lets_begin_again.pem ubuntu@18.188.11.150
