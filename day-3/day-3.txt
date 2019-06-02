@@ -1,16 +1,99 @@
 
 GitHub link: https://github.com/lerndevops/workshop-labs
 ----------------------------------------------------------
+Docker cmds cntd...
+docker swarm init #init manager
+## to make workers
+docker swarm join --token SWMTKN-1-0yhvkm5j6rqucneuejfgk4qp97vegarsp7m83wd6rzvdvq37sk-eo1yxz5mxd8intscd6kxufb40 172.31.22.176:2377
+docker node ls #for manager to inspect
+docker inspect node <nodeid/hostname>
+docker swarm join-token worker ##regenerate token
+docker swarm leave #for worker to leave
+docker node rm <nodeid/hostname>
+docker node update --label mylabel 
 
+#service commands only work in manager
+docker service create --name mysvc --replicas 4 -p 9080:8080 tomcat
+docker service ls
+docker service ps mysvc
+docker service rm mysvc
+docker service inspect mysvc1
+docker service scale mysvc=3 #will change the count of containers to 3
+
+docker stack deploy -c compose.yml mystack #
+----------------------------------------------------------
+ANSIBLE
+
+Controller Machine:
+===================
+
+ apt-get update
+ git clone https://github.com/lerndevops/workshop-labs
+ cd workshop-labs/
+ cd scritps/
+ ./setup-aws-user.sh   (select 6 for Asia area and 44 for kolkata time zone)
+ ./installAnsible.sh
+ ansible --version
+
+ 
+ Remote Nodes:
+ ===========
+ 
+ apt-get update
+ git clone https://github.com/lerndevops/workshop-labs
+ cd workshop-labs/
+ cd scritps/
+ ./setup-aws-user.sh   (select 6 for Asia area and 44 for kolkata time zone)
 
 
 ----------------------------------------------------------
+ANSIBLE commands
+-m module
+-k ask pwd
+-vvv verbose (1 v some info; 2 vs some more so and so on)
+ansible all -m ping -u devops -k
+ansible all -i inv -m ping -u devops -k #custom inventory
+ansible all -m ping -u devops -k -vvv #verbose/debug mode
+ansible all -m setup #ansible knows complete info of all its remote nodes
 
+#adhoc cmds give any unix command in -a 
+ansible all -a "free -m"
+ansible all -a "touch /tmp/newfile"
 
-
+#playbook commands
+ansible-playbook ping.yml
+ansible-playbook ping.yml --limit "<ip address" #
 
 ----------------------------------------------------------
+Splunk
+	Ubuntu
+	cd /tmp ; wget -O splunk-7.2.6-c0bf0f679ce9-linux-2.6-amd64.deb 'https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=linux&version=7.2.6&product=splunk&filename=splunk-7.2.6-c0bf0f679ce9-linux-2.6-amd64.deb&wget=true'
+	dpkg -i /tmp/splunk-7.2.6-c0bf0f679ce9-linux-2.6-amd64.deb
+	/opt/splunk/bin/splunk start --accept-license  ( enter username & password )
+Started at  http://ip-172-31-22-176:8000 (admin/qwer5678)
+
+Splunk Forwarder Installation  
+	cd /tmp ; wget -O splunkforwarder-7.2.6-c0bf0f679ce9-linux-2.6-amd64.deb 'https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=linux&version=7.2.6&product=universalforwarder&filename=splunkforwarder-7.2.6-c0bf0f679ce9-linux-2.6-amd64.deb&wget=true'
+	dpkg -i /tmp/splunkforwarder-7.2.6-c0bf0f679ce9-linux-2.6-amd64.deb
+	/opt/splunkforwarder/bin/splunk start --accept-license ( enter username & password )
+
+
+netstat -anp | grep 555 #check if listening on port
+
+Configure Forwarder where to forward the data ( before running below we need to configure the receiving on splu
+nk server )
+
+        cd /opt/splunkforwarder/bin
+        ./splunk add forward-server 18.217.72.120:555  #client username/pwd
+        cd /opt/splunkforwarder/etc/system/local/
+        more outputs.conf
+
+#push log from forwared
+./splunk add monitor /var/log/auth.log
+
+Link for All Material :
+=======================
+https://drive.google.com/drive/folders/1732vUV5gs7WHqgzO579X-mMghzZ5A5dV?usp=sharing
 
 
 
-----------------------------------------------------------
